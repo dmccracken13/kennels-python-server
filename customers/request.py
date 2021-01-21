@@ -144,6 +144,7 @@ def get_customers_by_email(email):
         db_cursor = conn.cursor()
 
         # Write the SQL query to get the information you want
+        # Question mark represents SQL parameter 
         db_cursor.execute("""
         select
             c.id,
@@ -153,13 +154,13 @@ def get_customers_by_email(email):
             c.password
         from Customer c
         WHERE c.email = ?
-        """, ( email, ))
+        """, ( email, )) # As there is only one question mark, only one paramter is required- email 
 
         customers = []
         dataset = db_cursor.fetchall()
 
         for row in dataset:
             customer = Customer(row['id'], row['name'], row['address'], row['email'] , row['password'])
-            customers.append(customer.__dict__)
+            customers.append(customer.__dict__) # the customer object is appended and converted into a dictionary, as json.dumps requires a dictionary 
 
     return json.dumps(customers)
